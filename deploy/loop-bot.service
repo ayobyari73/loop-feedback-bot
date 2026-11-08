@@ -1,0 +1,19 @@
+[Unit]
+Description=Loop feedback Telegram bot (long polling)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=loopbot
+Group=loopbot
+WorkingDirectory=/opt/loop-feedback-bot
+ExecStart=/usr/bin/php8.4 artisan app:run-bot
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target
