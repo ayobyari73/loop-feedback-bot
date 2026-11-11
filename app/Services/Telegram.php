@@ -18,7 +18,8 @@ class Telegram
     private const MAX_MESSAGE_LENGTH = 3800;
 
     /**
-     * api.telegram.org is filtered in Iran, so TELEGRAM_PROXY (e.g. socks5h://127.0.0.1:1080) may be needed.
+     * api.telegram.org is filtered in Iran: either point TELEGRAM_API_BASE at the Cloudflare Worker bridge,
+     * or set TELEGRAM_PROXY (e.g. socks5h://127.0.0.1:1080).
      */
     private function http(int $timeout = 15): PendingRequest
     {
@@ -47,7 +48,7 @@ class Telegram
         }
 
         try {
-            $response = $request->post("https://api.telegram.org/bot{$token}/{$method}", $params)->json() ?? [];
+            $response = $request->post(config('services.telegram.api_base')."/bot{$token}/{$method}", $params)->json() ?? [];
         } catch (ConnectionException $e) {
             Log::warning("Telegram {$method} unreachable: ".self::redact($e->getMessage()));
 

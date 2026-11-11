@@ -31,6 +31,10 @@ return [
     'telegram' => [
         'token' => env('TELEGRAM_BOT_TOKEN'),
         'proxy' => env('TELEGRAM_PROXY'),
+        // Where Bot API calls go. Behind Iran's filter this is the Cloudflare Worker bridge (deploy/cloudflare/worker.js).
+        'api_base' => rtrim(env('TELEGRAM_API_BASE', 'https://api.telegram.org'), '/'),
+        // Telegram sends this in X-Telegram-Bot-Api-Secret-Token on every webhook call; anything else is rejected.
+        'webhook_secret' => env('TELEGRAM_WEBHOOK_SECRET'),
     ],
 
     'slack' => [

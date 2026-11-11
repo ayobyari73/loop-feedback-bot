@@ -1,0 +1,8 @@
+# Deploy with: npx wrangler deploy   (from this folder, after `npx wrangler login`)
+name = "loop-telegram-bridge"
+main = "worker.js"
+compatibility_date = "2026-10-01"
+
+[vars]
+# Numeric part of the bot token (before the colon). Not secret: it is the bot's public ID.
+BOT_ID = "0"

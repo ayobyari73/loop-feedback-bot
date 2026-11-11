@@ -26,9 +26,14 @@ class RunBot extends Command
 
         $me = $telegram->call('getMe');
         if (! ($me['ok'] ?? false)) {
-            $this->error('Cannot reach Telegram (bad token, or api.telegram.org is blocked: set TELEGRAM_PROXY in .env).');
+            $this->error('Cannot reach Telegram at '.config('services.telegram.api_base').' (bad token, or the address is blocked: set TELEGRAM_API_BASE to the Cloudflare bridge, or TELEGRAM_PROXY).');
 
             return self::FAILURE;
+        }
+
+        if ($telegram->call('getWebhookInfo')['result']['url'] ?? '') {
+            $telegram->call('deleteWebhook');
+            $this->warn('A webhook was set; it has been removed so long polling can run (use `app:webhook set` to go back).');
         }
 
         $this->info("Bot @{$me['result']['username']} is running. Press Ctrl+C to stop.");
