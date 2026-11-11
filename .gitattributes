@@ -12,3 +12,4 @@ CHANGELOG.md export-ignore
 
 *.sh text eol=lf
 *.service text eol=lf
+Dockerfile text eol=lf
