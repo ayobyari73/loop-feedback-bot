@@ -1,4 +1,5 @@
-# Deploy with: npx wrangler deploy   (from this folder, after `npx wrangler login`)
+# Deploy with (from this folder, after `npx wrangler login`):
+#   npx wrangler deploy --var BOT_ID:<numeric part of the bot token>
 name = "loop-telegram-bridge"
 main = "worker.js"
 compatibility_date = "2026-10-01"
