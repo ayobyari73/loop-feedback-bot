@@ -8,6 +8,7 @@ use Illuminate\Http\Client\Request;
 use Illuminate\Queue\CallQueuedClosure;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
 class WebhookTest extends TestCase
@@ -59,6 +60,13 @@ class WebhookTest extends TestCase
 
         $this->assertSame(1, $this->repliesToMember());
         Http::assertSent(fn (Request $request) => str_starts_with($request->url(), 'https://bridge.example.org/bot123:fake/'));
+    }
+
+    public function test_the_webhook_route_has_no_csrf_session_or_cookie_middleware(): void
+    {
+        $middleware = Route::getRoutes()->getByName('telegram.webhook')->gatherMiddleware();
+
+        $this->assertSame([], $middleware, 'Telegram sends no cookies or CSRF token; the secret header is the only check.');
     }
 
     public function test_a_request_without_or_with_a_wrong_secret_is_rejected(): void
